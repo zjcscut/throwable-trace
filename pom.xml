@@ -1,0 +1,165 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.throwable</groupId>
+    <artifactId>throwable-trace</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>throwable-core</module>
+        <module>throwable-orm</module>
+        <module>throwable-amqp</module>
+        <module>throwable-quartz</module>
+        <module>throwable-cache</module>
+        <module>throwable-workflow</module>
+    </modules>
+    <name>throwable-trace</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.locales>zh_CN</project.build.locales>
+        <java.version>1.8</java.version>
+        <project.build.jdk>${java.version}</project.build.jdk>
+        <project.version>1.0-SNAPSHOT</project.version>
+        <springboot.version>1.4.1.RELEASE</springboot.version>
+        <mysql.version>5.1.39</mysql.version>
+    </properties>
+
+    <!--添加nexus私有仓库-->
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>http://localhost:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <!--添加nexus私有插件仓库-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>http://localhost:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <!--发布到nexus-->
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Nexus Release Repository</name>
+            <url>http://localhost:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Nexus Snapshot Repository</name>
+            <url>http://localhost:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <!--依赖管理-->
+    <dependencyManagement>
+        <dependencies>
+            <!--springboot版本管理-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${springboot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-orm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-amqp</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!--junit-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <finalName>throwable-trace</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${project.build.jdk}</source>
+                    <target>${project.build.jdk}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
