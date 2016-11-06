@@ -1,4 +1,4 @@
-package org.throwable.trace.security.xss;
+package org.throwable.core.trace.core.security.xss;
 
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartHttpServletRequest;

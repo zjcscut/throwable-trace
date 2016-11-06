@@ -1,4 +1,4 @@
-package org.throwable.trace.security.xss;
+package org.throwable.core.trace.core.security.xss;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;

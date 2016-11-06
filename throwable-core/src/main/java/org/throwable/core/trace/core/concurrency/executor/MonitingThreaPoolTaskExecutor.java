@@ -1,4 +1,4 @@
-package org.throwable.trace.concurrency.executor;
+package org.throwable.core.trace.core.concurrency.executor;
 
 import org.springframework.core.task.AsyncListenableTaskExecutor;
 import org.springframework.core.task.TaskDecorator;

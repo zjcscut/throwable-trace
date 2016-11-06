@@ -10,8 +10,9 @@
         <module>throwable-orm</module>
         <module>throwable-amqp</module>
         <module>throwable-quartz</module>
-        <module>throwable-cache</module>
+        <module>throwable-nosql</module>
         <module>throwable-workflow</module>
+        <module>throwable-bean</module>
     </modules>
     <name>throwable-trace</name>
 
@@ -23,6 +24,10 @@
         <project.version>1.0-SNAPSHOT</project.version>
         <springboot.version>1.4.1.RELEASE</springboot.version>
         <mysql.version>5.1.39</mysql.version>
+        <fastjson.version>1.2.17</fastjson.version>
+        <common.lang3.version>3.4</common.lang3.version>
+        <httpclient.version>4.5.2</httpclient.version>
+        <httpcore.version>4.4.5</httpcore.version>
     </properties>
 
     <!--添加nexus私有仓库-->
@@ -100,9 +105,55 @@
             </dependency>
 
             <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-bean</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-nosql</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-workflow</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${common.lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpcore</artifactId>
+                <version>${httpcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpmime</artifactId>
+                <version>${httpclient.version}</version>
             </dependency>
 
         </dependencies>

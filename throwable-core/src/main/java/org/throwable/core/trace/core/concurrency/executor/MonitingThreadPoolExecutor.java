@@ -1,4 +1,4 @@
-package org.throwable.trace.concurrency.executor;
+package org.throwable.core.trace.core.concurrency.executor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

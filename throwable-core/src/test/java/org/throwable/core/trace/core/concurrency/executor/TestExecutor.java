@@ -1,4 +1,6 @@
-package org.throwable.trace.concurrency.executor;
+package org.throwable.core.trace.core.concurrency.executor;
+
+import org.junit.Test;
 
 /**
  * @author zjc
@@ -6,4 +8,5 @@ package org.throwable.trace.concurrency.executor;
  * @description
  */
 public class TestExecutor {
+
 }
