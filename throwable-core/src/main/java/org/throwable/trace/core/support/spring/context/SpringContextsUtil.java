@@ -1,4 +1,4 @@
-package org.throwable.trace.core.utils.spring.context;
+package org.throwable.trace.core.support.spring.context;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;

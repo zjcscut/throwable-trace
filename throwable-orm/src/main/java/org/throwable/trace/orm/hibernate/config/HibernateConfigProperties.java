@@ -1,5 +1,6 @@
 package org.throwable.trace.orm.hibernate.config;
 
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

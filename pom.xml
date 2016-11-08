@@ -13,6 +13,8 @@
         <module>throwable-nosql</module>
         <module>throwable-workflow</module>
         <module>throwable-bean</module>
+        <module>throwable-datasource</module>
+        <module>throwable-eventbus</module>
     </modules>
     <name>throwable-trace</name>
 
@@ -28,6 +30,7 @@
         <common.lang3.version>3.4</common.lang3.version>
         <httpclient.version>4.5.2</httpclient.version>
         <httpcore.version>4.4.5</httpcore.version>
+        <druid.version>1.0.24</druid.version>
     </properties>
 
     <!--添加nexus私有仓库-->
@@ -123,6 +126,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.throwable</groupId>
+                <artifactId>throwable-datasource</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
@@ -154,6 +163,12 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpmime</artifactId>
                 <version>${httpclient.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
             </dependency>
 
         </dependencies>
