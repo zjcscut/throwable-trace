@@ -1,9 +1,14 @@
 package org.throwable.trace.orm.hibernate.config;
 
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -16,6 +21,7 @@ import java.util.Properties;
 public class HibernateConfigProperties {
 
 
+	//基础hibernate属性
 	private String show_sql = "true";
 	private String format_sql = "false";
 	private String hbm2ddl_auto = "update";
@@ -28,6 +34,12 @@ public class HibernateConfigProperties {
 	private String auto_commit = "false";
 	private String isolation = "4";
 	private String jdbc_batch_size = "20";
+
+	//额外属性
+	private Boolean enable_transaction = false; //是否允许使用Hibernate管理事务
+	private Boolean active = false; //是否使用Hibernate
+	private String packages_to_scan = "org.throwable.trace.bean"; //实体类所在的
+	private String mappings_directory_locations = "mappings"; //hbm.xml文件所在的classpath
 
 
 	public Properties buildHibernateProperties() {
@@ -45,6 +57,21 @@ public class HibernateConfigProperties {
 		props.put("hibernate.connection.isolation", getIsolation());
 		props.put("hibernate.jdbc.batch_size", getJdbc_batch_size());
 		return props;
+	}
+
+	public String[] packagesToScan() {
+		return this.packages_to_scan.split(",");
+	}
+
+	public Resource[] mappingsDirectoryLocations() {
+		List<ClassPathResource> classPathResources = new ArrayList<>();
+		if (!StringUtils.isBlank(this.mappings_directory_locations)) {
+			String[] mappings = mappings_directory_locations.split(",");
+			for (String mapping : mappings) {
+				classPathResources.add(new ClassPathResource(mapping));
+			}
+		}
+		return classPathResources.toArray(new ClassPathResource[classPathResources.size()]);
 	}
 
 
@@ -142,5 +169,37 @@ public class HibernateConfigProperties {
 
 	public void setJdbc_batch_size(String jdbc_batch_size) {
 		this.jdbc_batch_size = jdbc_batch_size;
+	}
+
+	public Boolean getEnable_transaction() {
+		return enable_transaction;
+	}
+
+	public void setEnable_transaction(Boolean enable_transaction) {
+		this.enable_transaction = enable_transaction;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public String getPackages_to_scan() {
+		return packages_to_scan;
+	}
+
+	public void setPackages_to_scan(String packages_to_scan) {
+		this.packages_to_scan = packages_to_scan;
+	}
+
+	public String getMappings_directory_locations() {
+		return mappings_directory_locations;
+	}
+
+	public void setMappings_directory_locations(String mappings_directory_locations) {
+		this.mappings_directory_locations = mappings_directory_locations;
 	}
 }
