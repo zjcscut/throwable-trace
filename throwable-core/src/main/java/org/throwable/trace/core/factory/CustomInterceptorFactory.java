@@ -6,4 +6,6 @@ package org.throwable.trace.core.factory;
  * @function 自定义拦截器工厂
  */
 public class CustomInterceptorFactory {
+
+
 }

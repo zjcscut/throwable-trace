@@ -51,7 +51,7 @@ public class ConcurrentHashSet<E> extends AbstractSet<E> implements Set<E> {
 
     @Override
     public boolean remove(Object o) {
-        return map.remove(o);
+        return map.remove(o) == Boolean.TRUE;
     }
 
     @Override

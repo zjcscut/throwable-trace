@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.Arrays;
 
@@ -83,7 +84,7 @@ public final class ReflectionUtils {
         return null;
     }
 
-    public static Object getInstance(String className){
+    public static Object getInstance(String className) {
         return getInstance(getInstanceClass(className));
     }
 
@@ -301,7 +302,7 @@ public final class ReflectionUtils {
     }
 
     public static boolean isStatic(Member member) {
-        return Modifier.isStatic(member.getModifiers()) ;
+        return Modifier.isStatic(member.getModifiers());
     }
 
     public static boolean isFinal(Member member) {
@@ -320,6 +321,7 @@ public final class ReflectionUtils {
         return isPublic(member) && isStatic(member) && isFinal(member);
     }
 
+    //是否equals方法
     public static boolean isEqualsMethod(Method method) {
         if (null == method || !"equals".equals(method.getName())) {
             return false;
@@ -328,10 +330,12 @@ public final class ReflectionUtils {
         return paramTypes.length == 1 && paramTypes[0] == Object.class;
     }
 
+    //是否hashCode方法
     public static boolean isHashCodeMethod(Method method) {
         return null != method && "hashCode".equals(method.getName()) && 0 == method.getTypeParameters().length;
     }
 
+    //是否ToString方法
     public static boolean isToStringMethod(Method method) {
         return null != method && "toString".equals(method.getName()) && 0 == method.getTypeParameters().length;
     }
@@ -351,6 +355,7 @@ public final class ReflectionUtils {
         return null;
     }
 
+    //获取getXXX的值,XXX为propertyName(getter方法)
     public static Object getReadValue(Class<?> clazz, String propertyName) {
         return getReadValue(getInstance(clazz), propertyName);
     }
@@ -369,8 +374,50 @@ public final class ReflectionUtils {
         }
     }
 
+    //设置setXXX的值,XXX为propertyName(setter方法),value为设置的值
     public static void setWriteValue(Class<?> clazz, String propertyName, Object value) {
         setWriteValue(getInstance(clazz), propertyName, value);
+    }
+
+    public static <T extends Annotation> T getClassAnnotation(Class<?> clazz, Class<T> annotation) {
+        return clazz.getAnnotation(annotation);
+    }
+
+    public static <T extends Annotation> T getClassDecleardAnnotation(Class<?> clazz, Class<T> annotation) {
+        return clazz.getDeclaredAnnotation(annotation);
+    }
+
+    public static <T extends Annotation> T getMethodAnnotation(Method method, Class<T> annotation) {
+        return method.getAnnotation(annotation);
+    }
+
+    public static <T extends Annotation> T getMethodDecleardAnnotation(Class<?> clazz, Class<T> annotation) {
+        return clazz.getDeclaredAnnotation(annotation);
+    }
+
+    public static <T extends Annotation> T getAnnotation(Class<?> clazz, Class<T> annotation) {
+        T ann = clazz.getAnnotation(annotation);
+        return ann != null ? ann : (clazz.getSuperclass() != Object.class ? getAnnotation(clazz.getSuperclass(), annotation) : ann);
+    }
+
+    public static <T extends Annotation> T getAnnotation(Method method, Class<T> annotation) {
+        T ann = method.getAnnotation(annotation);
+        if (ann != null) {
+            return ann;
+        } else {
+            Class clazz = method.getDeclaringClass();
+            Class superClass = clazz.getSuperclass();
+            if (superClass != Object.class) {
+                try {
+                    Method e = superClass.getMethod(method.getName(), method.getParameterTypes());
+                    return getAnnotation(e, annotation);
+                } catch (NoSuchMethodException var6) {
+                    return null;
+                }
+            } else {
+                return ann;
+            }
+        }
     }
 
 
