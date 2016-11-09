@@ -55,5 +55,9 @@ public class XDateUtils {
 		return date;
 	}
 
+	public static String format(Date date,String pattern){
+		return getInstance(pattern).format(date);
+	}
+
 
 }
