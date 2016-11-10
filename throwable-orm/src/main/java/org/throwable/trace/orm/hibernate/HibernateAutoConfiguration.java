@@ -41,7 +41,7 @@ public class HibernateAutoConfiguration {
 
 
 	//Hibernate事务管理器
-	@Bean
+	@Bean(name = "transactionManager")
 	@ConditionalOnBean(name = {"dynamicDataSource","sessionFactory"})
 	@ConditionalOnProperty(prefix = "org.throwable.trace.orm.hibernate.enable_transaction", havingValue = "true")
 	public HibernateTransactionManager transactionManager(DynamicDataSource dynamicDataSource) {

@@ -30,6 +30,7 @@
         <common.lang3.version>3.4</common.lang3.version>
         <httpclient.version>4.5.2</httpclient.version>
         <druid.version>1.0.24</druid.version>
+        <hibernate.jpa.version>1.0.0.Final</hibernate.jpa.version>
     </properties>
 
     <!--添加nexus私有仓库-->
@@ -163,6 +164,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${hibernate.jpa.version}</version>
             </dependency>
 
         </dependencies>
