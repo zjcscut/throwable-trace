@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ComponentScan(
-        basePackages = "org.throwable.trace.datasource"
+        basePackages = "org.throwable.trace.datasource.druid"
 )
 public class DataSourceConfiguration {
 }

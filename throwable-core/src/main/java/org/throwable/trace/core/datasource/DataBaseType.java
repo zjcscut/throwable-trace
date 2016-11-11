@@ -8,7 +8,7 @@ package org.throwable.trace.core.datasource;
 public enum DataBaseType {
 
     MYSQL("com.mysql.jdbc.Driver","org.throwable.trace.core.datasource.DynamicDataSource","SELECT 1"),
-    ORACLE("oracle.jdbc.driver.OracleDriver","org.throwable.trace.core.datasource.DynamicDataSource","select 1 from dual"),
+    ORACLE("oracle.jdbc.driver.OracleDriver","org.throwable.trace.core.datasource.DynamicDataSource","SELECT 1 FROM DUAL"),
     H2("org.h2.Driver","org.throwable.trace.core.datasource.DynamicDataSource","SELECT 1"),
     UNDEFINED(null,null,null);
 
