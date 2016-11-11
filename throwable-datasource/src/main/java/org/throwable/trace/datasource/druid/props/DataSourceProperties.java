@@ -2,6 +2,9 @@ package org.throwable.trace.datasource.druid.props;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
+import org.throwable.trace.bean.vo.DataSource;
+
+import java.util.List;
 
 /**
  * @author zhangjinci
