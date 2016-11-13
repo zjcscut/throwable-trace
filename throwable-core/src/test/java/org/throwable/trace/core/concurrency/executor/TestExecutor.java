@@ -14,7 +14,7 @@ public class TestExecutor {
 	public void test1() throws Exception{
 
 
-		System.in.read();
+//		System.in.read();
 	}
 
 }

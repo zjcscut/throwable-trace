@@ -21,7 +21,7 @@ public class TestHttpClient {
 		params.put("name", "zjcscut");
 		String url = "http://localhost:7003/user/json";
 		ExecutorService executorService = Executors.newFixedThreadPool(10);
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 10; i++) {
 			executorService.execute(new Runnable() {
 				@Override
 				public void run() {
@@ -35,6 +35,6 @@ public class TestHttpClient {
 
        executorService.shutdown();
 
-		System.in.read();
+//		System.in.read();
 	}
 }

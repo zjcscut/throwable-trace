@@ -1,7 +1,15 @@
 package org.throwable.trace.datasource;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.throwable.trace.core.datasource.DataSourceContext;
+import org.throwable.trace.core.datasource.DynamicDataSource;
+import org.throwable.trace.core.exception.DataSourceException;
+import org.throwable.trace.datasource.druid.props.DataSourceProperties;
+
+import java.util.Map;
 
 /**
  * @author zhangjinci
@@ -13,4 +21,23 @@ import org.springframework.context.annotation.Configuration;
         basePackages = "org.throwable.trace.datasource.druid"
 )
 public class DataSourceConfiguration {
+
+	@Autowired
+	private DataSourceProperties dataSourceProperties;
+
+	//Druid动态数据源配置
+	@Bean(name = "dynamicDataSource")
+	public DynamicDataSource dynamicDataSource() {
+		DynamicDataSource dynamicDataSource = new DynamicDataSource();
+		Map<Object, Object> targetDataSources = dataSourceProperties.buildTargetDynamicDataSource();
+		dynamicDataSource.setTargetDataSources(targetDataSources);
+		for (Map.Entry<Object, Object> entry : targetDataSources.entrySet()) {
+			if (entry.getKey() != null && ((DataSourceContext) entry.getKey()).getMaster()) {
+				dynamicDataSource.setDefaultTargetDataSource(entry.getValue());
+			} else {
+				throw new DataSourceException("one default master datasouce must be config");
+			}
+		}
+		return dynamicDataSource;
+	}
 }

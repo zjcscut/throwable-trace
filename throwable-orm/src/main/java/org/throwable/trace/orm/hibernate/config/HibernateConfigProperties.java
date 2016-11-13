@@ -38,8 +38,8 @@ public class HibernateConfigProperties {
 	//额外属性
 	private Boolean enable_transaction = false; //是否允许使用Hibernate管理事务
 	private Boolean active = false; //是否使用Hibernate
-	private String packages_to_scan = "org.throwable.trace.bean"; //实体类所在的
-	private String mappings_directory_locations = "mappings"; //hbm.xml文件所在的classpath
+	private String packages_to_scan ; //实体类所在的包
+	private String mappings_directory_locations; //hbm.xml文件所在的classpath
 
 
 	public Properties buildHibernateProperties() {
@@ -60,7 +60,10 @@ public class HibernateConfigProperties {
 	}
 
 	public String[] packagesToScan() {
-		return this.packages_to_scan.split(",");
+		if (!StringUtils.isBlank(this.packages_to_scan)) {
+			return this.packages_to_scan.split(",");
+		}
+		return null;
 	}
 
 	public Resource[] mappingsDirectoryLocations() {
@@ -70,6 +73,8 @@ public class HibernateConfigProperties {
 			for (String mapping : mappings) {
 				classPathResources.add(new ClassPathResource(mapping));
 			}
+		} else {
+			return null;
 		}
 		return classPathResources.toArray(new ClassPathResource[classPathResources.size()]);
 	}
