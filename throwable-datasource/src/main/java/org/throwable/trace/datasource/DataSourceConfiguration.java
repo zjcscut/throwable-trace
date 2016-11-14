@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Configuration
 @ComponentScan(
-        basePackages = "org.throwable.trace.datasource.druid"
+		basePackages = "org.throwable.trace.datasource.druid"
 )
 public class DataSourceConfiguration {
 
