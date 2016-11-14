@@ -1,2 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.throwable.trace.orm.hibernate.HibernateAutoConfiguration
+  org.throwable.trace.orm.hibernate.HibernateAutoConfiguration,\
+  org.throwable.trace.orm.throwjdbc.ThrowJdbcAutoConfiguration,\
+  org.throwable.trace.orm.mybatis.MybatisAutoConfiguration
