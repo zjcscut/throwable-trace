@@ -2,7 +2,7 @@ package org.throwable.trace.datasource.druid.props;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.throwable.trace.core.datasource.DataBaseType;
 import org.throwable.trace.core.datasource.DataSourceContext;
@@ -17,7 +17,7 @@ import java.util.*;
  * @function 数据源配置
  */
 @Component
-@ConditionalOnProperty(prefix = "org.throwable.trace")
+@ConfigurationProperties(prefix = "org.throwable.trace")
 public class DataSourceProperties {
 
 	@Autowired

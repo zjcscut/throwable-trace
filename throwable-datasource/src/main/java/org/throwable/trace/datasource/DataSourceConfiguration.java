@@ -26,7 +26,8 @@ public class DataSourceConfiguration {
 	private DataSourceProperties dataSourceProperties;
 
 	//Druid动态数据源配置
-	@Bean(name = "dynamicDataSource")
+	//这里Bean的名字必须指定为"dataSource",因为spring-jdbc需要这个bean
+	@Bean(name = "dataSource")
 	public DynamicDataSource dynamicDataSource() {
 		DynamicDataSource dynamicDataSource = new DynamicDataSource();
 		Map<Object, Object> targetDataSources = dataSourceProperties.buildTargetDynamicDataSource();

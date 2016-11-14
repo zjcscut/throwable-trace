@@ -30,7 +30,7 @@ public class HibernateConfigProperties {
 	private String use_query_cache = "false";
 	private String use_sql_comments = "false";
 	private String default_batch_fetch_size = "8";
-	private String query_cache_factory = "org.hibernate.cache.internal.StandardQueryCache";
+	private String cache_region_factory_class;
 	private String auto_commit = "false";
 	private String isolation = "4";
 	private String jdbc_batch_size = "20";
@@ -38,8 +38,8 @@ public class HibernateConfigProperties {
 	//额外属性
 	private Boolean enable_transaction = false; //是否允许使用Hibernate管理事务
 	private Boolean active = false; //是否使用Hibernate
-	private String packages_to_scan ; //实体类所在的包
-	private String mappings_directory_locations; //hbm.xml文件所在的classpath
+	private String packages_to_scan ; //实体类所在的包的全路径名,多个包用","分隔
+	private String mappings_directory_locations; //hbm.xml文件所在的classpath下文件夹名称,多个文件夹用","分隔
 
 
 	public Properties buildHibernateProperties() {
@@ -49,10 +49,12 @@ public class HibernateConfigProperties {
 		props.put("hibernate.dialect", getDialect());
 		props.put("hibernate.hbm2ddl.auto", getHbm2ddl_auto());
 		props.put("hibernate.cache.use_second_level_cache", getUse_second_level_cache());
-		props.put("hibernate.cache.query_cache_factory", getUse_query_cache());
+		props.put("hibernate.cache.use_query_cache", getUse_query_cache());
 		props.put("hibernate.use_sql_comments", getUse_sql_comments());
 		props.put("hibernate.default_batch_fetch_size", getDefault_batch_fetch_size());
-		props.put("hibernate.cache.query_cache_factory", getQuery_cache_factory());
+		if (!StringUtils.isBlank(getCache_region_factory_class())){
+			props.put("hibernate.cache.region.factory_class", getCache_region_factory_class());
+		}
 		props.put("hibernate.connection.autocommit", getAuto_commit());
 		props.put("hibernate.connection.isolation", getIsolation());
 		props.put("hibernate.jdbc.batch_size", getJdbc_batch_size());
@@ -144,12 +146,13 @@ public class HibernateConfigProperties {
 		this.default_batch_fetch_size = default_batch_fetch_size;
 	}
 
-	public String getQuery_cache_factory() {
-		return query_cache_factory;
+
+	public String getCache_region_factory_class() {
+		return cache_region_factory_class;
 	}
 
-	public void setQuery_cache_factory(String query_cache_factory) {
-		this.query_cache_factory = query_cache_factory;
+	public void setCache_region_factory_class(String cache_region_factory_class) {
+		this.cache_region_factory_class = cache_region_factory_class;
 	}
 
 	public String getAuto_commit() {
