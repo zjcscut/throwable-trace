@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.throwable.trace.core.datasource.DynamicDataSource;
@@ -18,9 +16,6 @@ import org.throwable.trace.orm.hibernate.config.HibernateConfigProperties;
  * @function Hibernate自动配置和扫描包
  */
 @Configuration
-@ComponentScan(
-		basePackages = {"org.throwable.trace.orm.hibernate"}
-)
 public class HibernateAutoConfiguration {
 
 	@Autowired

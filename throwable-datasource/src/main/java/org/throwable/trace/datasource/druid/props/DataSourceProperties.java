@@ -40,12 +40,17 @@ public class DataSourceProperties {
 			throw new DataSourceException("no any datasouce config could be found");
 		}
 		Map<Object, Object> datasoucesMap = new LinkedHashMap<>(datasources.size());
+		boolean hasMaster = false;
 		for (DataBaseProperties pro : datasources) {
+			hasMaster = pro.getIs_master();
 			DruidDataSource druidDataSource = buildDruidDataSource(pro.getUrl(), pro.getDriver(), pro.getUsername(), pro.getPassword());
 			DataSourceContext dataSourceContext = new DataSourceContext(pro.getName(), pro.getIs_master(),
 					DataBaseType.MYSQL.getTypeFromUrl(pro.getUrl()), druidDataSource);
 			datasoucesMap.put(dataSourceContext, druidDataSource);
-			DynamicDataSourceAspect.dataSourceContext.putIfAbsent(pro.getName(), dataSourceContext);
+			DynamicDataSourceAspect.dataSourceContext.putIfAbsent(pro.getName(), dataSourceContext); //添加到数据源上下文容器
+		}
+		if (!hasMaster) { //没有定义默认数据源,直接抛出异常
+			throw new DataSourceException("one default master(default) datasouce must be config");
 		}
 		return datasoucesMap;
 	}

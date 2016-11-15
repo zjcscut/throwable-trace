@@ -1,4 +1,4 @@
-package org.throwable.trace.orm.hibernate.config;
+package org.throwable.trace.orm;
 
 import org.hibernate.SessionFactory;
 import org.junit.Test;
@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.throwable.trace.datasource.druid.props.DataSourceProperties;
+import org.throwable.trace.orm.hibernate.config.HibernateConfigProperties;
 import org.throwable.trace.orm.hibernate.service.UserService;
+import org.throwable.trace.orm.main.Application;
 
 import java.util.Arrays;
 
@@ -21,7 +23,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {Application.class})
-public class TestConfig {
+public class TestHibernate {
 
 	@Test
 	public void test1() throws Exception {

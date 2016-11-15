@@ -1,4 +1,4 @@
-package org.throwable.trace.orm.hibernate.config;
+package org.throwable.trace.orm.main;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

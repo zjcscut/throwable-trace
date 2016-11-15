@@ -7,11 +7,29 @@ package org.throwable.trace.datasource.druid.props;
  */
 public class DataBaseProperties {
 
+	/**
+	 * 是否主数据源
+	 */
 	private Boolean is_master;
+	/**
+	 * 数据源名字,用于切换数据源
+	 */
 	private String name;
+	/**
+	 * 数据库连接
+	 */
 	private String url;
+	/**
+	 * 驱动class名称
+	 */
 	private String driver;
+	/**
+	 * 数据库用户名
+	 */
 	private String username;
+	/**
+	 * 数据库密码
+	 */
 	private String password;
 
 	public Boolean getIs_master() {

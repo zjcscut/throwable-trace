@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class DynamicDataSourceAspect {
 
+	//全局数据源上下文容器
 	public static final ConcurrentHashMap<String, DataSourceContext> dataSourceContext = new ConcurrentHashMap<>();
 
 	//匹配所有被@TargetDataSource标注的执行中的方法
