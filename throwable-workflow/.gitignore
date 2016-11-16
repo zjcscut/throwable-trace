@@ -1,0 +1,13 @@
+# Created by .ignore support plugin (hsz.mobi)
+### gitFinal template
+# Created by .ignore support plugin (hsz.mobi)
+### git template
+# Created by .ignore support plugin (hsz.mobi)
+### .gitignore template
+target/
+*.iml
+*.ipr
+*.iws
+out/
+.idea/
+logs/

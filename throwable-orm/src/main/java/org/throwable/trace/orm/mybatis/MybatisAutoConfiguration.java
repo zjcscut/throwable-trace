@@ -2,11 +2,13 @@ package org.throwable.trace.orm.mybatis;
 
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -28,11 +30,10 @@ import java.util.Properties;
 @Configuration
 public class MybatisAutoConfiguration {
 
+    private final static Logger log = LoggerFactory.getLogger(MybatisAutoConfiguration.class);
+
     @Autowired
     private MybatisConfigProperties mybatisConfigProperties;
-
-    @Value("${org.throwable.trace.orm.mybatis.mappers}")
-    private String mappers;
 
 
     //Mybatis sqlSessionFactory 在spring-mybatis包中封装为SqlSessionFactoryBean
@@ -55,12 +56,12 @@ public class MybatisAutoConfiguration {
             properties.setProperty("reasonable", "true"); //合理化配置
             properties.setProperty("supportMethodsArguments", "true"); //可以通过mapper传参分页
             properties.setProperty("returnPageInfo", "none"); //返回Page对象
-//		properties.setProperty("dialect", "mysql");  //数据库方言,4.0版本后会自动判断
             pageHelper.setProperties(properties);
             sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});
 
             return sqlSessionFactoryBean.getObject();
         } catch (Exception e) {
+            log.error("Create  mybatis sqlSessionFactory,failed,message:{}", e.getMessage());
             throw new OrmConfigException(e);
         }
     }
@@ -70,7 +71,11 @@ public class MybatisAutoConfiguration {
     @ConditionalOnBean(name = "sqlSessionFactory")
     @ConditionalOnProperty(prefix = "org.throwable.trace.orm.mybatis", name = "active", havingValue = "true")
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
-        return new SqlSessionTemplate(sqlSessionFactory);
+        ExecutorType executorType = mybatisConfigProperties.getExecutorType();
+        if (executorType == null) {
+            return new SqlSessionTemplate(sqlSessionFactory);
+        }
+        return new SqlSessionTemplate(sqlSessionFactory, executorType);
     }
 
     //Mybatis transactionManager

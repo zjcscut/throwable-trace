@@ -1,6 +1,7 @@
 package org.throwable.trace.orm.mybatis.config;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.ExecutorType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -24,6 +25,9 @@ public class MybatisConfigProperties {
     private String mapping_locations ; //mapping.xml文件的类路径
     private String base_package;  //mapper 接口所在的包全路径名,多个包用','或者';'分隔
     private String mappers; //通用mapper的全类名,多个用','分隔
+
+    //提交器
+    private ExecutorType executorType;
 
     public Boolean getEnable_transaction() {
         return enable_transaction;
@@ -84,5 +88,13 @@ public class MybatisConfigProperties {
             return null;
         }
         return classPathResources.toArray(new ClassPathResource[classPathResources.size()]);
+    }
+
+    public ExecutorType getExecutorType() {
+        return executorType;
+    }
+
+    public void setExecutorType(ExecutorType executorType) {
+        this.executorType = executorType;
     }
 }
