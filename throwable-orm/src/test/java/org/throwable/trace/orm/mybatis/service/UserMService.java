@@ -1,10 +1,12 @@
 package org.throwable.trace.orm.mybatis.service;
 
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.throwable.trace.orm.mybatis.entity.User;
 import org.throwable.trace.orm.mybatis.mapper.UserMapper;
+import org.throwable.trace.orm.mybatis.utils.PageBean;
 
 import java.util.List;
 
@@ -20,8 +22,9 @@ public class UserMService {
     @Autowired
     private UserMapper userMapper;
 
-    public List<User> selectAll() {
-        return userMapper.selectAll();
+    public PageBean<User> selectAll() {
+        PageHelper.startPage(1, 1);
+        return new PageBean<>(userMapper.selectAll());
     }
 
     public User selectById(Integer id) {

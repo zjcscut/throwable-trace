@@ -25,7 +25,7 @@ public class TestMybatis {
 
     @Test
     public void Test1() {
-        System.out.println("users--> " + Arrays.toString(userMService.selectAll().toArray()));
+        System.out.println("users--> " + Arrays.toString(userMService.selectAll().getList().toArray()));
         User u = userMService.selectById(1);
         u.setEmail("55545455");
         userMService.update(u);
