@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class CustomArgumentResolverFactory {
 
-    private final static ConcurrentHashSet<HandlerMethodArgumentResolver> resolvers = new ConcurrentHashSet<>();
+    private static final ConcurrentHashSet<HandlerMethodArgumentResolver> resolvers = new ConcurrentHashSet<>();
 
     static {
         resolvers.add(new CustomArgumentResolver());

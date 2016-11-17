@@ -1,5 +1,6 @@
 package org.throwable.trace.orm;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,5 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackages = {
         "org.throwable.trace.orm"
 })
+@Mapper
 public class OrmAutoConfiguration {
 }

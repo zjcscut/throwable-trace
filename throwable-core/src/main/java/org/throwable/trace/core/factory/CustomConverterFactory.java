@@ -12,7 +12,7 @@ import org.throwable.trace.core.support.spring.converter.type.StringToDateConver
  */
 public class CustomConverterFactory {
 
-    private final static ConcurrentHashSet<Converter> converters = new ConcurrentHashSet<>();
+    private static final ConcurrentHashSet<Converter> converters = new ConcurrentHashSet<>();
 
     static {
         converters.add(new StringToDateConverter());

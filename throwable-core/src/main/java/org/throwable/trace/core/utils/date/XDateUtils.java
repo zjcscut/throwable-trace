@@ -34,7 +34,7 @@ public class XDateUtils {
 		SimpleDateFormat dateFormat = dateFormatCachePool.get(pattern);
 		if (dateFormat == null) {
 			dateFormat = new SimpleDateFormat(pattern);
-			dateFormatCachePool.put(pattern, dateFormat);
+			dateFormatCachePool.putIfAbsent(pattern, dateFormat);
 		}
 		return dateFormat;
 	}

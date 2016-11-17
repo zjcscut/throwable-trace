@@ -1,0 +1,6 @@
+org:
+  throwable:
+     trace:
+        orm:
+         mybatis:
+           active: true

@@ -27,21 +27,23 @@ import org.aspectj.lang.reflect.MethodSignature;
  */
 public final class AopUtils {
 
-    /**
-     * 通过Around的ProceedingJoinPoint拼接方法名
-     *
-     * @param pjp 切点信息对象
-     * @return 方法和参数名 cn.hello.helloWorld（java.lang.String name1,java.lang.String name2）
-     */
-    public static String getMethodAndParamsName(ProceedingJoinPoint pjp) {
-        StringBuilder methodName = new StringBuilder(pjp.getSignature().getName()).append("(");
-        MethodSignature signature = (MethodSignature) pjp.getSignature();
-        String[] names = signature.getParameterNames();
-        Class[] args = signature.getParameterTypes();
-        for (int i = 0, len = args.length; i < len; i++) {
-            if (i != 0) methodName.append(",");
-            methodName.append(args[i].getSimpleName()).append(" ").append(names[i]);
-        }
-        return methodName.append(")").toString();
-    }
+	/**
+	 * 通过Around的ProceedingJoinPoint拼接方法名
+	 *
+	 * @param pjp 切点信息对象
+	 * @return 方法和参数名 cn.hello.helloWorld（java.lang.String name1,java.lang.String name2）
+	 */
+	public static String getMethodAndParamsName(ProceedingJoinPoint pjp) {
+		StringBuilder methodName = new StringBuilder(pjp.getSignature().getName()).append("(");
+		MethodSignature signature = (MethodSignature) pjp.getSignature();
+		String[] names = signature.getParameterNames();
+		Class[] args = signature.getParameterTypes();
+		for (int i = 0, len = args.length; i < len; i++) {
+			if (i != 0) {
+				methodName.append(",");
+			}
+			methodName.append(args[i].getSimpleName()).append(" ").append(names[i]);
+		}
+		return methodName.append(")").toString();
+	}
 }
