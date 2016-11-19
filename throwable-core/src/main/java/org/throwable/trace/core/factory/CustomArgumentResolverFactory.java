@@ -2,7 +2,7 @@ package org.throwable.trace.core.factory;
 
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.throwable.trace.core.support.spring.request.CustomArgumentResolver;
-import org.throwable.trace.core.utils.extend.ConcurrentHashSet;
+import org.throwable.trace.core.concurrency.set.ConcurrentHashSet;
 
 import java.util.List;
 

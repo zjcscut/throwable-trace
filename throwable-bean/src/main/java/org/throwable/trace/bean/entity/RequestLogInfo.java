@@ -45,6 +45,9 @@ public class RequestLogInfo extends BaseEntity {
     @Column(name = "COST_TIME")
     private Long costTime;
 
+    private transient boolean print;
+    private transient boolean persistence;
+
     public RequestLogInfo() {
     }
 
@@ -166,5 +169,21 @@ public class RequestLogInfo extends BaseEntity {
 
     public void setResponseTime(Long responseTime) {
         this.responseTime = responseTime;
+    }
+
+    public boolean isPrint() {
+        return print;
+    }
+
+    public void setPrint(boolean print) {
+        this.print = print;
+    }
+
+    public boolean isPersistence() {
+        return persistence;
+    }
+
+    public void setPersistence(boolean persistence) {
+        this.persistence = persistence;
     }
 }

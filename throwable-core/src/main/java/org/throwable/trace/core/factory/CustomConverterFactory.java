@@ -2,7 +2,7 @@ package org.throwable.trace.core.factory;
 
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.format.FormatterRegistry;
-import org.throwable.trace.core.utils.extend.ConcurrentHashSet;
+import org.throwable.trace.core.concurrency.set.ConcurrentHashSet;
 import org.throwable.trace.core.support.spring.converter.type.StringToDateConverter;
 
 /**

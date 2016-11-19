@@ -12,6 +12,12 @@ import java.lang.annotation.*;
 @Documented
 public @interface RquestLogger {
 
+    //是否输出到控制台
+    boolean print() default false;
+
+    //是否允许持久化
+    boolean enablePersistence() default false;
+
     String value() default "request-logger";
 
     String description() default "request-logger-descprition";

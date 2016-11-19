@@ -31,6 +31,8 @@ public class ReuqestLoggerResolver {
     private static final Logger log = LoggerFactory.getLogger(ReuqestLoggerResolver.class);
 
     public RequestLogInfo resolve(ProceedingJoinPoint pjp, HttpServletRequest request) {
+        boolean print = false;
+        boolean persistence = false;
         RequestLogInfo requestLogInfo = new RequestLogInfo();
         log.debug("access request logger resolver ..");
         Class<?> target = pjp.getTarget().getClass();
@@ -42,12 +44,16 @@ public class ReuqestLoggerResolver {
         RquestLogger clazzAnno = ReflectionUtils.getAnnotation(target, RquestLogger.class);
         RquestLogger methodAnno = ReflectionUtils.getAnnotation(m, RquestLogger.class);
         if (clazzAnno != null) {
+            print = clazzAnno.print();
+            persistence = clazzAnno.enablePersistence();
             desc.append(clazzAnno.value()).append(":").append(clazzAnno.description());
         }
         if (methodAnno != null) {
             if (clazzAnno != null) {
                 desc.append("-");
             }
+            print = methodAnno.print();
+            persistence = methodAnno.enablePersistence();
             desc.append(methodAnno.value()).append(":").append(methodAnno.description());
         }
         Map<String, Object> params = new LinkedHashMap<>();
@@ -86,6 +92,10 @@ public class ReuqestLoggerResolver {
         requestLogInfo.setUrl(request.getRequestURL().toString());
         requestLogInfo.setUri(request.getRequestURI());
         requestLogInfo.setRequestParams(FastJsonUtils.toJson(params));
+        requestLogInfo.setPrint(print);
+        requestLogInfo.setPersistence(persistence);
         return requestLogInfo;
     }
+
+
 }
