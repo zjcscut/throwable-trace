@@ -20,7 +20,6 @@ import java.io.UnsupportedEncodingException;
 public class FastJsonMessageConverter extends AbstractJsonMessageConverter {
 
     private static final Logger log = LoggerFactory.getLogger(FastJsonMessageConverter.class);
-    private static final String DEFAULT_CHARSET = "utf-8";
     private ObjectMapper jsonObjectMapper = new ObjectMapper();
     private ClassMapper classMapper;
     private Jackson2JavaTypeMapper javaTypeMapper = new DefaultJackson2JavaTypeMapper();

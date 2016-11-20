@@ -8,6 +8,7 @@ import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.util.ConcurrentReferenceHashMap;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,10 +18,13 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author zjc
  * @version 2016/11/17 23:24
- * @description 资源工具类,直接获取配置文件中的值,适用于Springboot
- * @warn 模式(pathPattern)匹配使用遍历,会有性能问题,尽量在容器初始化阶段调用,不要实时使用
+ * @description 资源工具类, 直接获取配置文件中的值, 适用于Springboot
+ * @warn 模式(pathPattern)匹配使用遍历, 会有性能问题, 尽量在容器初始化阶段调用, 不要实时使用
  * @see PathMatchingResourcePatternResolver
  * @see PropertySourceLoader
+ * 缓存使用
+ * @see ConcurrentHashMap
+ * @see ConcurrentReferenceHashMap
  */
 public final class ResourceUtils {
 
@@ -36,6 +40,16 @@ public final class ResourceUtils {
 	 * value:PropertySourceLoader对象
 	 */
 	private static final ConcurrentHashMap<String, PropertySourceLoader> propertySourceLoaders = new ConcurrentHashMap<>();
+
+	/**
+	 * 缓存根据 location获取到的resource
+	 */
+	private static final ConcurrentReferenceHashMap<String, Resource> resourceCache = new ConcurrentReferenceHashMap<>();
+
+	/**
+	 * 缓存根据 pathPattern获取到的resource[]
+	 */
+	private static final ConcurrentReferenceHashMap<String, Resource[]> resourcesCache = new ConcurrentReferenceHashMap<>();
 
 	private static PathMatchingResourcePatternResolver bornResolver() {
 		if (resolver == null) {
@@ -53,7 +67,11 @@ public final class ResourceUtils {
 	public static Resource[] getResourcesByPathPattern(String pathPattern) {
 		Resource[] resources = null;
 		try {
-			resources = bornResolver().getResources(pathPattern);
+			resources = resourcesCache.get(pathPattern);
+			if (resources == null) {
+				resources = bornResolver().getResources(pathPattern);
+				resourcesCache.put(pathPattern, resources);
+			}
 		} catch (IOException e) {
 			log.error(String.format("get resources from path:[%s] failed,message:%s", pathPattern, e.getMessage()));
 		}
@@ -69,7 +87,11 @@ public final class ResourceUtils {
 	public static Resource getResourcesByLocation(String location) {
 		Resource resource = null;
 		try {
-			resource = bornResolver().getResource(location);
+			resource = resourceCache.get(location);
+			if (resource == null) {
+				resource = bornResolver().getResource(location);
+				resourceCache.put(location, resource);
+			}
 		} catch (Exception e) {
 			log.error(String.format("get resources from location:[%s] failed,message:%s", location, e.getMessage()));
 		}
@@ -83,8 +105,8 @@ public final class ResourceUtils {
 	 * @param key      key
 	 * @return value
 	 */
-	public static Object getPropValueByLocation(String location, String key) {
-		Object value = null;
+	public static String getPropValueByLocation(String location, String key) {
+		String value = null;
 		loader = propertySourceLoaders.get(location);
 		if (loader == null) {
 			loader = new PropertiesPropertySourceLoader();
@@ -93,7 +115,7 @@ public final class ResourceUtils {
 		Resource resource = getResourcesByLocation(location);
 		if (resource != null) {
 			try {
-				value = loader.load(key, resource, null).getProperty(key);
+				value = loader.load(key, resource, null).getProperty(key).toString();
 			} catch (IOException e) {
 				log.error(String.format("get resource value from properties file location:[%s] failed,message:%s", location, e.getMessage()));
 			}
@@ -108,8 +130,8 @@ public final class ResourceUtils {
 	 * @param key         key
 	 * @return values
 	 */
-	public static List<Object> getPropValuesByPathPattern(String pathPattern, String key) {
-		List<Object> values = new ArrayList<>();
+	public static List<String> getPropValuesByPathPattern(String pathPattern, String key) {
+		List<String> values = new ArrayList<>();
 		loader = propertySourceLoaders.get(pathPattern);
 		if (loader == null) {
 			loader = new PropertiesPropertySourceLoader();
@@ -120,7 +142,7 @@ public final class ResourceUtils {
 			try {
 				PropertySource<?> ps = loader.load(key, resource, null);
 				if (ps.containsProperty(key)) {
-					values.add(ps.getProperty(key));
+					values.add(ps.getProperty(key).toString());
 				}
 			} catch (IOException e) {
 				log.error(String.format("get resource values from properties file pathPattern:[%s] failed,message:%s", pathPattern, e.getMessage()));
@@ -136,8 +158,8 @@ public final class ResourceUtils {
 	 * @param key      key
 	 * @return value
 	 */
-	public static Object getYamlValueByLocation(String location, String key) {
-		Object value = null;
+	public static String getYamlValueByLocation(String location, String key) {
+		String value = null;
 		loader = propertySourceLoaders.get(location);
 		if (loader == null) {
 			loader = new YamlPropertySourceLoader();
@@ -146,7 +168,7 @@ public final class ResourceUtils {
 		Resource resource = getResourcesByLocation(location);
 		if (resource != null) {
 			try {
-				value = loader.load(key, resource, null).getProperty(key);
+				value = loader.load(key, resource, null).getProperty(key).toString();
 			} catch (IOException e) {
 				log.error(String.format("get resource value from yaml file location:[%s] failed,message:%s", location, e.getMessage()));
 			}
@@ -161,8 +183,8 @@ public final class ResourceUtils {
 	 * @param key         key
 	 * @return values
 	 */
-	public static List<Object> getYamlValuesByPathPattern(String pathPattern, String key) {
-		List<Object> values = new ArrayList<>();
+	public static List<String> getYamlValuesByPathPattern(String pathPattern, String key) {
+		List<String> values = new ArrayList<>();
 		loader = propertySourceLoaders.get(pathPattern);
 		if (loader == null) {
 			loader = new YamlPropertySourceLoader();
@@ -173,7 +195,7 @@ public final class ResourceUtils {
 			try {
 				PropertySource<?> ps = loader.load(key, resource, null);
 				if (ps.containsProperty(key)) {
-					values.add(ps.getProperty(key));
+					values.add(ps.getProperty(key).toString());
 				}
 			} catch (IOException e) {
 				log.error(String.format("get resource values from yaml file pathPattern:[%s] failed,message:%s", pathPattern, e.getMessage()));
@@ -181,5 +203,4 @@ public final class ResourceUtils {
 		}
 		return values;
 	}
-
 }

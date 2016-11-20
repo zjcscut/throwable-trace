@@ -19,6 +19,8 @@ public class TestExtend {
 	public void testResources() throws Exception {
 		System.out.println(ResourceUtils.getPropValuesByPathPattern("classpath:*.properties",
 				"org.throwable.trace.orm.mybatis.active"));
+		System.out.println(ResourceUtils.getPropValuesByPathPattern("classpath:*.properties",
+				"org.throwable.trace.orm.mybatis.enable_transaction"));
 	}
 
 	@Test
