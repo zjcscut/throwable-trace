@@ -1,12 +1,13 @@
 package org.throwable.trace.amqp.rabbitmq.config;
 
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
  * @author zjc
  * @version 2016/11/20 23:50
- * @description
+ * @description rabbitmq属性配置
  */
 @Component
 @ConfigurationProperties(prefix = "org.throwable.trace.amqp.rabbitmq")
@@ -20,13 +21,13 @@ public class RabbitmqProperties {
 	private Boolean publish_confirms = false;
 	private Boolean publish_returns = false;
 	/**
-	 * 是否允许生产者并发
+	 * 是否允许连接并发
 	 */
-	private Boolean enable_producer_concurrency = false;
-	private Integer producer_executor_core_pool_size;
-	private Integer producer_executor_max_pool_size;
-	private Integer producer_executor_queue_capacity;
-	private Integer producer_executor_keep_alive_seconds;
+	private Boolean enable_connection_concurrency = false;
+	private Integer connection_executor_core_pool_size;
+	private Integer connection_executor_max_pool_size;
+	private Integer connection_executor_queue_capacity;
+	private Integer connection_executor_keep_alive_seconds;
 	/**
 	 * 是否允许消费者并发
 	 */
@@ -35,6 +36,10 @@ public class RabbitmqProperties {
 	private Integer consumer_executor_max_pool_size;
 	private Integer consumer_executor_queue_capacity;
 	private Integer consumer_executor_keep_alive_seconds;
+	private Integer concurrent_consumers;
+	private Integer max_concurrent_consumers;
+
+	private String acknowledge_mode;
 
 
 	public String getUsername() {
@@ -93,13 +98,6 @@ public class RabbitmqProperties {
 		this.publish_returns = publish_returns;
 	}
 
-	public Boolean getEnable_producer_concurrency() {
-		return enable_producer_concurrency;
-	}
-
-	public void setEnable_producer_concurrency(Boolean enable_producer_concurrency) {
-		this.enable_producer_concurrency = enable_producer_concurrency;
-	}
 
 	public Boolean getEnable_consumer_concurrency() {
 		return enable_consumer_concurrency;
@@ -113,37 +111,6 @@ public class RabbitmqProperties {
 		return getHost() + ":" + getPort() + "/api/";
 	}
 
-	public Integer getProducer_executor_core_pool_size() {
-		return producer_executor_core_pool_size;
-	}
-
-	public void setProducer_executor_core_pool_size(Integer producer_executor_core_pool_size) {
-		this.producer_executor_core_pool_size = producer_executor_core_pool_size;
-	}
-
-	public Integer getProducer_executor_max_pool_size() {
-		return producer_executor_max_pool_size;
-	}
-
-	public void setProducer_executor_max_pool_size(Integer producer_executor_max_pool_size) {
-		this.producer_executor_max_pool_size = producer_executor_max_pool_size;
-	}
-
-	public Integer getProducer_executor_queue_capacity() {
-		return producer_executor_queue_capacity;
-	}
-
-	public void setProducer_executor_queue_capacity(Integer producer_executor_queue_capacity) {
-		this.producer_executor_queue_capacity = producer_executor_queue_capacity;
-	}
-
-	public Integer getProducer_executor_keep_alive_seconds() {
-		return producer_executor_keep_alive_seconds;
-	}
-
-	public void setProducer_executor_keep_alive_seconds(Integer producer_executor_keep_alive_seconds) {
-		this.producer_executor_keep_alive_seconds = producer_executor_keep_alive_seconds;
-	}
 
 	public Integer getConsumer_executor_core_pool_size() {
 		return consumer_executor_core_pool_size;
@@ -175,5 +142,88 @@ public class RabbitmqProperties {
 
 	public void setConsumer_executor_keep_alive_seconds(Integer consumer_executor_keep_alive_seconds) {
 		this.consumer_executor_keep_alive_seconds = consumer_executor_keep_alive_seconds;
+	}
+
+	public Boolean getEnable_connection_concurrency() {
+		return enable_connection_concurrency;
+	}
+
+	public void setEnable_connection_concurrency(Boolean enable_connection_concurrency) {
+		this.enable_connection_concurrency = enable_connection_concurrency;
+	}
+
+	public Integer getConnection_executor_core_pool_size() {
+		return connection_executor_core_pool_size;
+	}
+
+	public void setConnection_executor_core_pool_size(Integer connection_executor_core_pool_size) {
+		this.connection_executor_core_pool_size = connection_executor_core_pool_size;
+	}
+
+	public Integer getConnection_executor_max_pool_size() {
+		return connection_executor_max_pool_size;
+	}
+
+	public void setConnection_executor_max_pool_size(Integer connection_executor_max_pool_size) {
+		this.connection_executor_max_pool_size = connection_executor_max_pool_size;
+	}
+
+	public Integer getConnection_executor_queue_capacity() {
+		return connection_executor_queue_capacity;
+	}
+
+	public void setConnection_executor_queue_capacity(Integer connection_executor_queue_capacity) {
+		this.connection_executor_queue_capacity = connection_executor_queue_capacity;
+	}
+
+	public Integer getConnection_executor_keep_alive_seconds() {
+		return connection_executor_keep_alive_seconds;
+	}
+
+	public void setConnection_executor_keep_alive_seconds(Integer connection_executor_keep_alive_seconds) {
+		this.connection_executor_keep_alive_seconds = connection_executor_keep_alive_seconds;
+	}
+
+	public Integer getConcurrent_consumers() {
+		return concurrent_consumers;
+	}
+
+	public void setConcurrent_consumers(Integer concurrent_consumers) {
+		this.concurrent_consumers = concurrent_consumers;
+	}
+
+	public Integer getMax_concurrent_consumers() {
+		return max_concurrent_consumers;
+	}
+
+	public void setMax_concurrent_consumers(Integer max_concurrent_consumers) {
+		this.max_concurrent_consumers = max_concurrent_consumers;
+	}
+
+	public String getAcknowledge_mode() {
+		return acknowledge_mode;
+	}
+
+	public void setAcknowledge_mode(String acknowledge_mode) {
+		this.acknowledge_mode = acknowledge_mode;
+	}
+
+	public AcknowledgeMode exchangeAcknowledgeMode() {
+		AcknowledgeMode acknowledgeMode;
+		switch (getAcknowledge_mode().toLowerCase()) {
+			case "none":
+				acknowledgeMode = AcknowledgeMode.NONE;
+				break;
+			case "auto":
+				acknowledgeMode = AcknowledgeMode.AUTO;
+				break;
+			case "manual":
+				acknowledgeMode = AcknowledgeMode.MANUAL;
+				break;
+			default: {
+				acknowledgeMode = AcknowledgeMode.NONE;
+			}
+		}
+		return acknowledgeMode;
 	}
 }
