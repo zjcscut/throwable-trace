@@ -41,6 +41,11 @@ public class RabbitmqProperties {
 
 	private String acknowledge_mode;
 
+	/**
+	 * mq配置文件:json文件
+	 */
+	private String config_file_location;
+
 
 	public String getUsername() {
 		return username;
@@ -206,6 +211,14 @@ public class RabbitmqProperties {
 
 	public void setAcknowledge_mode(String acknowledge_mode) {
 		this.acknowledge_mode = acknowledge_mode;
+	}
+
+	public String getConfig_file_location() {
+		return config_file_location;
+	}
+
+	public void setConfig_file_location(String config_file_location) {
+		this.config_file_location = config_file_location;
 	}
 
 	public AcknowledgeMode exchangeAcknowledgeMode() {
