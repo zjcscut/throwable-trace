@@ -44,6 +44,8 @@ public class RabbitmqProperties {
      */
     private String config_file_location;
 
+    private Boolean mandatory;
+
 
     public String getUsername() {
         return username;
@@ -202,6 +204,14 @@ public class RabbitmqProperties {
 
     public void setConfig_file_location(String config_file_location) {
         this.config_file_location = config_file_location;
+    }
+
+    public Boolean getMandatory() {
+        return mandatory;
+    }
+
+    public void setMandatory(Boolean mandatory) {
+        this.mandatory = mandatory;
     }
 
     public AcknowledgeMode exchangeAcknowledgeMode() {

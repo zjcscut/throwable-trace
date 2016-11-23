@@ -212,6 +212,7 @@ public class RabbitmqConfiguration {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setEncoding(SystemContext.UTF8_CHARSET);
         rabbitTemplate.setMessageConverter(contentTypeDelegatingMessageConverter);
+        rabbitTemplate.setMandatory(rabbitmqProperties.getMandatory());
         if (rabbitmqProperties.getPublish_confirms()) {
             rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
                 @Override
