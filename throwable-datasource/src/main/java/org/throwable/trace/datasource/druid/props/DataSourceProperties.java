@@ -4,8 +4,8 @@ import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import org.throwable.trace.core.datasource.DataBaseType;
-import org.throwable.trace.core.datasource.DataSourceContext;
+import org.throwable.trace.datasource.DataBaseType;
+import org.throwable.trace.datasource.DataSourceContext;
 import org.throwable.trace.core.exception.DataSourceException;
 import org.throwable.trace.datasource.druid.support.DynamicDataSourceAspect;
 

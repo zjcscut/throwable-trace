@@ -1,6 +1,4 @@
-package org.throwable.trace.core.datasource;
-
-import org.throwable.trace.core.datasource.DataBaseType;
+package org.throwable.trace.datasource;
 
 import javax.sql.DataSource;
 

@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.throwable.trace.core.datasource.DataSourceContext;
-import org.throwable.trace.core.datasource.DynamicDataSource;
 import org.throwable.trace.datasource.druid.props.DataSourceProperties;
 
 import java.util.Map;

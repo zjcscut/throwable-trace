@@ -1,4 +1,4 @@
-package org.throwable.trace.core.datasource;
+package org.throwable.trace.datasource;
 
 /**
  * @author zhangjinci
@@ -7,9 +7,9 @@ package org.throwable.trace.core.datasource;
  */
 public enum DataBaseType {
 
-	MYSQL("com.mysql.jdbc.Driver", "org.throwable.trace.core.datasource.DynamicDataSource", "SELECT 1"),
-	ORACLE("oracle.jdbc.driver.OracleDriver", "org.throwable.trace.core.datasource.DynamicDataSource", "SELECT 1 FROM DUAL"),
-	H2("org.h2.Driver", "org.throwable.trace.core.datasource.DynamicDataSource", "SELECT 1"),
+	MYSQL("com.mysql.jdbc.Driver", "org.throwable.trace.datasource.DynamicDataSource", "SELECT 1"),
+	ORACLE("oracle.jdbc.driver.OracleDriver", "org.throwable.trace.datasource.DynamicDataSource", "SELECT 1 FROM DUAL"),
+	H2("org.h2.Driver", "org.throwable.trace.datasource.DynamicDataSource", "SELECT 1"),
 	UNDEFINED(null, null, null);
 
 	DataBaseType(String driverClassName, String dataSourceClassName, String testQuery) {

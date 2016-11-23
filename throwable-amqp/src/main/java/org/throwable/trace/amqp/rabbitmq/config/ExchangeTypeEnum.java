@@ -7,7 +7,7 @@ package org.throwable.trace.amqp.rabbitmq.config;
  */
 public enum ExchangeTypeEnum {
 
-    CUSTOM("custom"),
+    DEFAULT("direct"),
 
     DIRECT("direct"),
 

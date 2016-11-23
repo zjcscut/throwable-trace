@@ -1,0 +1,20 @@
+[
+  {
+    "queueName": "queue1",
+    "exchangeName": "exchange1",
+    "exchangeType": "direct",
+    "routingKey": "key1"
+  },
+  {
+    "queueName": "queue2",
+    "exchangeName": "exchange2",
+    "exchangeType": "direct",
+    "routingKey": "key2"
+  },
+  {
+    "queueName": "queue3",
+    "exchangeName": "exchange3",
+    "exchangeType": "direct",
+    "routingKey": "key3"
+  }
+]

@@ -1,16 +1,18 @@
 package org.throwable.trace.amqp.rabbitmq.support;
 
 import org.springframework.amqp.core.*;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.stereotype.Component;
-import org.throwable.trace.amqp.rabbitmq.config.ExchangeTypeEnum;
 import org.throwable.trace.amqp.rabbitmq.config.RabbitmqBindingProperties;
 import org.throwable.trace.amqp.rabbitmq.config.RabbitmqProperties;
 import org.throwable.trace.core.utils.json.JacksonMapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zjc
@@ -19,15 +21,15 @@ import java.util.List;
  */
 @Component
 @AutoConfigureAfter(value = RabbitmqProperties.class)
-public class BindingConfigResolver {
+public class BindingConfigResolver implements InitializingBean{
 
     @Autowired
     private RabbitmqProperties rabbitmqProperties;
 
     private List<RabbitmqBindingProperties> bindingList;
 
-
-    public BindingConfigResolver() throws Exception {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         init();
     }
 
@@ -38,16 +40,61 @@ public class BindingConfigResolver {
     public List<Binding> buildBindings() {
         List<Binding> bindings = new ArrayList<>(bindingList.size());
         for (RabbitmqBindingProperties bindingSingle : bindingList) {
-            Binding binding = BindingBuilder.bind(createQueue(bindingSingle.getQueueName()))
-                    .to(createExchange(bindingSingle.getExchangeName(),bindingSingle.getExchangeType()))
-                    .with(bindingSingle.getRoutingKey()).noargs();
-            bindings.add(binding);
+            bindings.add(transferBinding(bindingSingle));
         }
         return bindings;
     }
 
+    /**
+     * 根据Exchange类型进行Binding装换
+     *
+     * @param bindingSingle bindingSingle
+     * @return Binding
+     */
+    private Binding transferBinding(RabbitmqBindingProperties bindingSingle) {
+        Binding binding;
+        switch (bindingSingle.getExchangeType().toLowerCase()) {
+            case "direct":
+                binding = BindingBuilder.bind(createQueue(bindingSingle.getQueueName()))
+                        .to(new DirectExchange(bindingSingle.getExchangeName()))
+                        .with(bindingSingle.getRoutingKey());
+                break;
+            case "topic":
+                binding = BindingBuilder.bind(createQueue(bindingSingle.getQueueName()))
+                        .to(new TopicExchange(bindingSingle.getExchangeName()))
+                        .with(bindingSingle.getRoutingKey());
+                break;
+            case "headers":
+                /**
+                 * 只提供 whereAll() key value同时匹配
+                 */
+                binding = BindingBuilder.bind(createQueue(bindingSingle.getQueueName()))
+                        .to(new HeadersExchange(bindingSingle.getExchangeName()))
+                        .whereAll(exchangeHeaderToMap(bindingSingle.getRoutingKey()))
+                        .match();
+                break;
+            case "fanout":
+                binding = BindingBuilder.bind(createQueue(bindingSingle.getQueueName()))
+                        .to(new FanoutExchange(bindingSingle.getExchangeName()));
+                break;
+            default: {
+                binding = BindingBuilder.bind(createQueue(bindingSingle.getQueueName()))
+                        .to(createExchange(bindingSingle.getExchangeName(), bindingSingle.getExchangeType()))
+                        .with(bindingSingle.getRoutingKey()).noargs();
+            }
+        }
+        return binding;
+    }
 
-    private Binding transfer
+    private Map<String, Object> exchangeHeaderToMap(String key) {
+        String[] mapEntrys = key.split(";");
+        Map<String, Object> result = new HashMap<>(mapEntrys.length);
+        for (String mapEntry : mapEntrys) {
+            String[] entry = mapEntry.split("=");
+            result.put(entry[0], entry[1]);
+        }
+        return result;
+    }
 
     public List<Queue> buildQueues() {
         List<Queue> queues = new ArrayList<>(bindingList.size());

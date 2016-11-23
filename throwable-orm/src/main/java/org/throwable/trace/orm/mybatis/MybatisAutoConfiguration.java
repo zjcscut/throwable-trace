@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.throwable.trace.core.datasource.DynamicDataSource;
+import org.throwable.trace.datasource.DynamicDataSource;
 import org.throwable.trace.core.exception.OrmConfigException;
 import org.throwable.trace.orm.mybatis.config.MybatisConfigProperties;
 

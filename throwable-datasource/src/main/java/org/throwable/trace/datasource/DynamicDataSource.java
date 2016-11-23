@@ -1,4 +1,4 @@
-package org.throwable.trace.core.datasource;
+package org.throwable.trace.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
