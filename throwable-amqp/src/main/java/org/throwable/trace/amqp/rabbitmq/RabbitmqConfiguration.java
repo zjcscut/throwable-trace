@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitManagementTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.retry.RepublishMessageRecoverer;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.amqp.support.converter.ContentTypeDelegatingMessageConverter;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -21,7 +22,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.throwable.trace.amqp.rabbitmq.config.RabbitmqProperties;
 import org.throwable.trace.amqp.rabbitmq.converter.FastJsonMessageConverter;
 import org.throwable.trace.amqp.rabbitmq.support.BindingConfigResolver;
-import org.throwable.trace.core.concurrency.executor.MonitingThreaPoolTaskExecutor;
+import org.throwable.trace.amqp.rabbitmq.support.ConfirmCallbackResolver;
 import org.throwable.trace.core.exception.AmqpException;
 import org.throwable.trace.core.utils.SystemContext;
 
@@ -46,7 +47,6 @@ public class RabbitmqConfiguration {
     /**
      * 消息连接工厂线程池
      *
-     * @see MonitingThreaPoolTaskExecutor
      * @see org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
      */
     @Bean(name = "connectionThreadPoolTaskExecutor")
@@ -62,7 +62,6 @@ public class RabbitmqConfiguration {
     /**
      * 消息消费者线程池
      *
-     * @see MonitingThreaPoolTaskExecutor
      * @see org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
      */
     @Bean(name = "consumerThreadPoolTaskExecutor")
@@ -222,6 +221,20 @@ public class RabbitmqConfiguration {
                     } else {
                         log.debug("Broker comfirm failed,CorrelationData id==>" + correlationData.getId() + ";cause:" + cause);
                     }
+                }
+            });
+        }
+        //
+        if (rabbitmqProperties.getPublish_returns() && rabbitmqProperties.getMandatory()) {
+            final RabbitTemplate errorTemplate = new RabbitTemplate(connectionFactory);
+            rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+                @Override
+                public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+                    String errorMsg = "route failed and try to republish again,replyCode:" + replyCode + ",replyText:" + replyText;
+                    log.error(errorMsg);
+                    RepublishMessageRecoverer recoverer = new RepublishMessageRecoverer(errorTemplate);
+                    Throwable cause = new Exception(errorMsg);
+                    recoverer.recover(message, cause);
                 }
             });
         }
