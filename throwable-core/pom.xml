@@ -69,7 +69,6 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

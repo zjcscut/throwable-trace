@@ -37,6 +37,8 @@
         <pagehelper.version>4.1.6</pagehelper.version>
         <mybatis.mapper.version>3.3.9</mybatis.mapper.version>
         <jackson.version>2.8.5</jackson.version>
+        <hibernate.validator.version>5.3.3.Final</hibernate.validator.version>
+        <javax.el.version>2.2.4</javax.el.version>
     </properties>
 
     <!--添加nexus私有仓库-->
@@ -206,6 +208,7 @@
                 <version>${mybatis.mapper.version}</version>
             </dependency>
 
+            <!--junit-->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -213,6 +216,7 @@
                 <scope>test</scope>
             </dependency>
 
+            <!--jackson-->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
@@ -227,6 +231,26 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <!--hibernate-validator-->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate.validator.version}</version>
+            </dependency>
+
+            <!--javax.el-api-->
+            <dependency>
+                <groupId>javax.el</groupId>
+                <artifactId>javax.el-api</artifactId>
+                <version>${javax.el.version}</version>
+            </dependency>
+            <!--javax.el-->
+            <dependency>
+                <groupId>org.glassfish.web</groupId>
+                <artifactId>javax.el</artifactId>
+                <version>${javax.el.version}</version>
             </dependency>
 
         </dependencies>

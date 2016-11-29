@@ -39,7 +39,8 @@ public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
-                                  NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+                                  NativeWebRequest nativeWebRequest,
+								  WebDataBinderFactory webDataBinderFactory) throws Exception {
         if (webDataBinderFactory == null) {
             return null;
         }
@@ -55,9 +56,11 @@ public class CustomArgumentResolver implements HandlerMethodArgumentResolver {
             field.setAccessible(true);
             String customParamName = buildCustomParamName(prefix, field.getName());
             if (ArrayUtils.contains(customParam.match(), field.getType())) { //使用Apache的数组包含判断
-                arg = conversionService.convert(nativeWebRequest.getParameter(customParamName), field.getType());  //使用ConversionService里面的Converters进行转换
+                arg = conversionService.convert(nativeWebRequest.getParameter(customParamName),
+						field.getType());  //使用ConversionService里面的Converters进行转换
             } else {
-                arg = binder.convertIfNecessary(nativeWebRequest.getParameter(customParamName), field.getType(), methodParameter);
+                arg = binder.convertIfNecessary(nativeWebRequest.getParameter(customParamName),
+						field.getType(), methodParameter);
             }
             field.set(target, arg);
         }

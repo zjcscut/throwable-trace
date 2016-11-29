@@ -44,7 +44,10 @@ public class RabbitmqProperties {
      */
     private String config_file_location;
 
-    private Boolean mandatory;
+	/**
+	 * 如果想要return callback必须设置为true
+	 */
+	private Boolean mandatory = false;
 
 
     public String getUsername() {
